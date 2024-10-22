@@ -11,7 +11,15 @@ create table Playlist(
     Titulo varchar(255) not null,
     ID_Us int,
     foreign key (ID_Us) references Usuario(ID_Us));
-    
+
+-- Criação da tabela Disco
+create table Disco(
+	ID_Di int primary key auto_increment,
+    Titulo varchar(255) not null,
+    Lancamento date not null,
+    ID_Ar int,
+    foreign key (ID_Ar) references Artista(ID_Ar));    
+
 -- Criação da tabela Música
 create table Musica(
 	ID_Mu int primary key auto_increment,
@@ -19,14 +27,6 @@ create table Musica(
     Duracao int not null,
     ID_Di int,
     foreign key (ID_Di) references Disco(ID_Di));
-    
--- Criação da tabela Disco
-create table Disco(
-	ID_Di int primary key auto_increment,
-    Titulo varchar(255) not null,
-    Lancamento date not null,
-    ID_Ar int,
-    foreign key (ID_Ar) references Artista(ID_Ar));
     
 -- Criação da tabela Artista
 create table Artista(
