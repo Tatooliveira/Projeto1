@@ -1,12 +1,10 @@
 # Modelo Relacional
 
-
+![Modelo Relacional](ModeloRelacional.png)
 
 # Modelo Entidade-Relacional
 
 ![Modelo Entidade-Relacional](ModeloEntidade-Relacional.png)
-
-![Modelo Entidade-Relacional](https://github.com/user-attachments/assets/9ca3db05-3efb-4b77-856c-b334bc6fde8d)
 
 # Criação das tabelas
 
