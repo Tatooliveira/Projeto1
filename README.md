@@ -8,7 +8,7 @@
 
 # Criação das tabelas
 
-Para a criação das tabelas, crie um banco de dados e execute o script Projeto 1 - Final.sql
+Para a criação das tabelas, crie um banco de dados e execute o script tabela.sql
 
 # Criação de Dados
 
@@ -22,11 +22,11 @@ pip install Faker
 
 Para rodar o script, rode a seguinte linha de comando:
 
-python ./Código VSCODE.py
+python ./createData.py
 
 # Queries
 
-Para executar as Queries, rode o arquivo Projeto1 - Final - 2.sql
+Para executar as Queries, rode o arquivo queries.sql
 
 # Alunos
 
