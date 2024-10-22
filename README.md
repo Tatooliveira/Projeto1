@@ -16,13 +16,13 @@ Para a criação das tabelas, crie um banco de dados e execute o script tabela.s
 
 O script utiliza uma biblioteca para geração de dados fictícios
 
-pip install Faker
+`pip install Faker`
 
 ## Execução
 
 Para rodar o script, rode a seguinte linha de comando:
 
-python ./createData.py
+`python ./createData.py`
 
 # Queries
 
