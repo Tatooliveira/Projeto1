@@ -1,5 +1,3 @@
-use projeto1;
-
 -- Criação da tabela Usuário
 create table Usuario(
 	ID_Us int primary key auto_increment,
