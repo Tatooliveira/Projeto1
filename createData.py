@@ -1,103 +1,106 @@
-import mysql.connector
 from faker import Faker
 import random
-from datetime import timedelta, date
 
-# Conexão com o banco de dados
-conn = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password="celina65",
-    database="projeto1"
-)
-cursor = conn.cursor()
+class Usuario:
+    def __init__(self, nome, email, registro):
+        self.nome = nome
+        self.email = email
+        self.registro = registro
 
-# Inicializando Faker para geração de dados
-fake = Faker()
+    def create(self):
+        return f"INSERT INTO Usuario (Nome, Email, Registro) VALUES ('{self.nome}', '{self.email}', '{self.registro}');\n"
 
-# Função para inserir dados na tabela Usuario
-def insert_usuarios(n):
-    usuarios = []
-    for _ in range(n):
-        nome = fake.name()
-        email = fake.email()
-        registro = fake.date_this_decade()
-        cursor.execute("INSERT INTO Usuario (Nome, Email, Registro) VALUES (%s, %s, %s)", (nome, email, registro))
-        usuarios.append(cursor.lastrowid)
-    conn.commit()
-    return usuarios
+class Playlist:
+    def __init__(self, titulo, usuario_id):
+        self.titulo = titulo
+        self.usuario_id = usuario_id
 
-# Função para inserir dados na tabela Playlist
-def insert_playlists(usuarios, n):
-    playlists = []
-    for _ in range(n):
-        titulo = fake.sentence(nb_words=3)
-        id_us = random.choice(usuarios)
-        cursor.execute("INSERT INTO Playlist (Titulo, ID_Us) VALUES (%s, %s)", (titulo, id_us))
-        playlists.append(cursor.lastrowid)
-    conn.commit()
-    return playlists
+    def create(self):
+        return f"INSERT INTO Playlist (Titulo, ID_Us) VALUES ('{self.titulo}', {self.usuario_id});\n"
 
-# Função para inserir dados na tabela Artista
-def insert_artistas(n):
-    artistas = []
-    for _ in range(n):
-        nome = fake.name()
-        nascimento = fake.date_of_birth(minimum_age=20, maximum_age=60)
-        cursor.execute("INSERT INTO Artista (Nome, Nascimento) VALUES (%s, %s)", (nome, nascimento))
-        artistas.append(cursor.lastrowid)
-    conn.commit()
-    return artistas
+class Artista:
+    def __init__(self, nome, nascimento):
+        self.nome = nome
+        self.nascimento = nascimento
 
-# Função para inserir dados na tabela Disco
-def insert_discos(artistas, n):
-    discos = []
-    for _ in range(n):
-        titulo = fake.sentence(nb_words=2)
-        lancamento = fake.date_between(start_date="-30y", end_date="today")
-        id_ar = random.choice(artistas)
-        cursor.execute("INSERT INTO Disco (Titulo, Lancamento, ID_Ar) VALUES (%s, %s, %s)", (titulo, lancamento, id_ar))
-        discos.append(cursor.lastrowid)
-    conn.commit()
-    return discos
+    def create(self):
+        return f"INSERT INTO Artista (Nome, Nascimento) VALUES ('{self.nome}', '{self.nascimento}');\n"
 
-# Função para inserir dados na tabela Musica
-def insert_musicas(discos, n):
-    musicas = []
-    for _ in range(n):
-        titulo = fake.sentence(nb_words=3)
-        duracao = random.randint(120, 420)  # Duração entre 2 e 7 minutos
-        id_di = random.choice(discos)
-        cursor.execute("INSERT INTO Musica (Titulo, Duracao, ID_Di) VALUES (%s, %s, %s)", (titulo, duracao, id_di))
-        musicas.append(cursor.lastrowid)
-    conn.commit()
-    return musicas
+class Disco:
+    def __init__(self, titulo, lancamento, artista_id):
+        self.titulo = titulo
+        self.lancamento = lancamento
+        self.artista_id = artista_id
 
-# Função para inserir dados na tabela Playlist_Musica
-def insert_playlist_musica(playlists, musicas, n):
-    for _ in range(n):
-        id_pl = random.choice(playlists)
-        id_mu = random.choice(musicas)
-        cursor.execute("INSERT INTO Playlist_Musica (ID_Pl, ID_Mu) VALUES (%s, %s)", (id_pl, id_mu))
-    conn.commit()
+    def create(self):
+        return f"INSERT INTO Disco (Titulo, Lancamento, ID_Ar) VALUES ('{self.titulo}', '{self.lancamento}', {self.artista_id});\n"
 
-# Função para inserir dados na tabela Musica_Artista
-def insert_musica_artista(musicas, artistas, n):
-    for _ in range(n):
-        id_mu = random.choice(musicas)
-        id_ar = random.choice(artistas)
-        cursor.execute("INSERT INTO Musica_Artista (ID_Mu, ID_Ar) VALUES (%s, %s)", (id_mu, id_ar))
-    conn.commit()
+class Musica:
+    def __init__(self, titulo, duracao, disco_id):
+        self.titulo = titulo
+        self.duracao = duracao
+        self.disco_id = disco_id
 
-# Gerando e inserindo dados
-usuarios = insert_usuarios(10)  # Insere 10 usuários
-artistas = insert_artistas(10)  # Insere 10 artistas
-discos = insert_discos(artistas, 10)  # Insere 10 discos
-musicas = insert_musicas(discos, 20)  # Insere 20 músicas
-playlists = insert_playlists(usuarios, 5)  # Insere 5 playlists
-insert_playlist_musica(playlists, musicas, 10)  # Insere 10 relações Playlist-Música
-insert_musica_artista(musicas, artistas, 10)  # Insere 10 relações Música-Artista
+    def create(self):
+        return f"INSERT INTO Musica (Titulo, Duracao, ID_Di) VALUES ('{self.titulo}', {self.duracao}, {self.disco_id});\n"
 
-# Fechando conexão
-cursor.close()
-conn.close()
+class MusicaArtista:
+    def __init__(self, musica_id, artista_id):
+        self.musica_id = musica_id
+        self.artista_id = artista_id
+
+    def create(self):
+        return f"INSERT INTO Musica_Artista (ID_Mu, ID_Ar) VALUES ({self.musica_id}, {self.artista_id});\n"
+
+class PlaylistMusica:
+    def __init__(self, playlist_id, musica_id):
+        self.playlist_id = playlist_id
+        self.musica_id = musica_id
+
+    def create(self):
+        return f"INSERT INTO Playlist_Musica (ID_Pl, ID_Mu) VALUES ({self.playlist_id}, {self.musica_id});\n"
+
+fake = Faker(['pt_BR'])
+
+usuarios = [Usuario(fake.name(), fake.email(), fake.date_between(start_date='-5y', end_date='today')) for _ in range(20)]
+artistas = [Artista(fake.name(), fake.date_of_birth(minimum_age=20, maximum_age=60)) for _ in range(10)]
+discos = [Disco(fake.sentence(nb_words=3), fake.date_between(start_date='-10y', end_date='today'), random.randint(1, len(artistas))) for _ in range(30)]
+musicas = [Musica(fake.sentence(nb_words=4), random.randint(180, 300), random.randint(1, len(discos))) for _ in range(100)]
+playlists = [Playlist(fake.sentence(nb_words=3), random.randint(1, len(usuarios))) for _ in range(15)]
+
+musica_artistas = [MusicaArtista(random.randint(1, len(musicas)), random.randint(1, len(artistas))) for _ in range(50)]
+playlist_musicas = [PlaylistMusica(random.randint(1, len(playlists)), random.randint(1, len(musicas))) for _ in range(40)]
+
+with open("./seeder.sql", "w", encoding='utf-8') as f:
+    for usuario in usuarios:
+        f.write(usuario.create())
+    
+    f.write("\n")
+
+    for artista in artistas:
+        f.write(artista.create())
+    
+    f.write("\n")
+
+    for disco in discos:
+        f.write(disco.create())
+    
+    f.write("\n")
+
+    for musica in musicas:
+        f.write(musica.create())
+    
+    f.write("\n")
+
+    for playlist in playlists:
+        f.write(playlist.create())
+    
+    f.write("\n")
+
+    for musica_artista in musica_artistas:
+        f.write(musica_artista.create())
+    
+    f.write("\n")
+
+    for playlist_musica in playlist_musicas:
+        f.write(playlist_musica.create())
