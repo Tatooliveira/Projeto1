@@ -1,7 +1,3 @@
-# Fluxograma
-
-![Fluxograma](Fluxograma.png)
-
 # Modelo Relacional
 
 ![Modelo Relacional](ModeloRelacional.png)
