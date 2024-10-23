@@ -24,6 +24,8 @@ Para rodar o script, rode a seguinte linha de comando:
 
 `python ./createData.py`
 
+Ao rodar este arquivo, ele gerara um arquivo seeder.sql que contem os dados falsos, deve importa-lo no MySQL e roda-lo
+
 # Queries
 
 Para executar as Queries, rode o arquivo queries.sql
